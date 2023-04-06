@@ -2,23 +2,20 @@ class PasswordsController < ApplicationController
     before_action :require_user_logged_in!
     
     def edit
-
     end
 
     def update
         user = Current.user
-        if Current.user
-            @user = User.update(user_params)
-            redirect_to root_path, notice: "Logged in successfully."
+        if Current.user.update(password_params)
+            redirect_to root_path, notice: "Password was successfully updated."
         else
-            flash[:alert] = "Invalid email or password."
-            render :new
+            render :edit
         end
     end
 
     private
 
-    def user_params
+    def password_params
         params.require(:user).permit(:password, :password_confirmation)
     end
 end
